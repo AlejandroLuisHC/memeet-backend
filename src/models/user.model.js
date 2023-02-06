@@ -18,7 +18,7 @@ const userSchema = new Schema({
             }
         }
     },
-    img: {
+    image: {
         key: String,
         url: {
             type: String,
@@ -37,4 +37,4 @@ const userSchema = new Schema({
     timestamps: true
 })
 
-const User = model("User", userSchema)
+module.exports = model("User", userSchema)

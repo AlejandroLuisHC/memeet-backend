@@ -1,12 +1,12 @@
 const { Schema, model } = require("mongoose")
 
-const userSchema = new Schema({
+const memeSchema = new Schema({
     name: {
         type: String,
         required: true,
         trim: true
     },
-    img: {
+    image: {
         key: String,
         url: {
             type: String,
@@ -14,8 +14,8 @@ const userSchema = new Schema({
         }
     },
     tags: [{
-        type: String,
-        trim: true
+        type: Schema.Types.ObjectId,
+        ref: "Tag",
     }],
     owner: {
         type: Schema.Types.ObjectId,
@@ -26,12 +26,12 @@ const userSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "User"
     }],
-    comments: [{
-        type: Schema.Types.ObjectId,
-        ref: "Comment"
-    }]
+    // comments: [{
+    //     type: Schema.Types.ObjectId,
+    //     ref: "Comment"
+    // }]
 }, {
     timestamps: true
 })
 
-const User = model("Meme", userSchema)
+module.exports = model("Meme", memeSchema)

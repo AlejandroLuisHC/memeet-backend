@@ -15,12 +15,12 @@ const s3 = new S3({
 });
 
 // UPLOAD FILE TO S3
-function uploadFile(file) {
-    const fileStream = fs.createReadStream(file.path);
+function uploadFile(path, name) {
+    const fileStream = fs.createReadStream(path);
     const uploadParams = {
         Bucket: AWS_BUCKET_NAME,
         Body: fileStream,
-        Key: file.filename,
+        Key: `memes/${Date.now()}_${name}`,
     };
 
     return s3.upload(uploadParams).promise(); // this will upload file to S3

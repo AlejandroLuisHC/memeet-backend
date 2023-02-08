@@ -12,10 +12,9 @@ const router = express.Router()
 
 router
     .get("/",                 getAllUsers)
-    .get("/:id",    checkJwt, getOneUser)
+    .get("/:id",              getOneUser)
     .post("/",                postUser)
     .patch("/:id",  checkJwt, patchUser)
     .delete("/:id", checkJwt, deleteUser)
-
 
 module.exports = router;

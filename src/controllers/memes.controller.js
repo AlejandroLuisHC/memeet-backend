@@ -1,5 +1,5 @@
 const mongoose = require("mongoose")
-const { Meme } = require("../models")
+const { Meme, User } = require("../models")
 const fs = require("fs-extra")
 const {
     uploadFile,
@@ -96,15 +96,26 @@ const memesController = {
                     url: Location
                 }
             })
+            const memeId = mongoose.Types.ObjectId(meme._id)
             const updatedUser = await User.findByIdAndUpdate(
                 { _id: body.owner },
                 {
                     $push: {
-                        memes: meme._id
+                        myMemes: memeId
                     }
                 },
                 { new: true }
             )
+                .populate({
+                    path: "myMemes",
+                    populate: [
+                        { path: "tags" },
+                        { path: "owner" }
+                    ]
+                })
+                .populate("likedMemes")
+                .lean()
+                .exec()
 
             res.status(201).send({
                 status: "Created",

@@ -14,7 +14,10 @@ const usersController = {
                 .sort({ createdAt: -1 })
                 .populate({
                     path: "myMemes",
-                    populate: "tags",
+                    populate: [
+                        { path: "tags" },
+                        { path: "owner" }
+                    ]
                 })
                 .populate("likedMemes")
                 .lean()
@@ -45,7 +48,10 @@ const usersController = {
                 .findById(id)
                 .populate({
                     path: "myMemes",
-                    populate: "tags",
+                    populate: [
+                        { path: "tags" },
+                        { path: "owner" }
+                    ]
                 })
                 .populate("likedMemes")
                 .lean()
@@ -132,7 +138,10 @@ const usersController = {
                     }, { new: true })
                         .populate({
                             path: "myMemes",
-                            populate: "tags",
+                            populate: [
+                                { path: "tags" },
+                                { path: "owner" }
+                            ]
                         })
                         .populate("likedMemes")
                         .lean()
@@ -157,7 +166,10 @@ const usersController = {
                     }, { new: true })
                         .populate({
                             path: "myMemes",
-                            populate: "tags",
+                            populate: [
+                                { path: "tags" },
+                                { path: "owner" }
+                            ]
                         })
                         .populate("likedMemes")
                         .lean()

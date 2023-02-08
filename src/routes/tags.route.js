@@ -8,7 +8,7 @@ const { checkJwt } = require("../middlewares/checkJwt.middleware");
 const router = express.Router()
 
 router
-    .get("/", getAllTags)
-    .post("/",  postTag)
+    .get("/",            getAllTags)
+    .post("/", checkJwt, postTag)
 
 module.exports = router;

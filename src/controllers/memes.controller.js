@@ -39,6 +39,13 @@ const memesController = {
     getOneMeme: async (req, res) => {
         const { id } = req.params
 
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).send({
+                status: "false",
+                message: "Invalid ID"
+            })
+        }
+
         try {
             const meme = await Meme
                 .findById(id)
@@ -68,6 +75,11 @@ const memesController = {
     },
     postMeme: async (req, res) => {
         const { body, files } = req
+        const tagsObjectIds = body?.tags.split(",").map(tag => mongoose.Types.ObjectId(tag))
+        const newBody = {
+            ...body,
+            tags: tagsObjectIds
+        }
 
         try {
             const { image } = files
@@ -78,18 +90,31 @@ const memesController = {
 
             // Create new meme
             const meme = await Meme.create({
-                ...body,
-                image: { 
-                    key: Key, 
-                    url: Location 
+                ...newBody,
+                image: {
+                    key: Key,
+                    url: Location
                 }
             })
+            const updatedUser = await User.findByIdAndUpdate(
+                { _id: body.owner },
+                {
+                    $push: {
+                        memes: meme._id
+                    }
+                },
+                { new: true }
+            )
 
             res.status(201).send({
                 status: "Created",
-                data: meme
+                data: {
+                    meme,
+                    updatedUser
+                }
             })
         } catch (error) {
+            console.log(error.message);
             res.status(500).send({
                 status: "false",
                 message: error.message
@@ -214,6 +239,36 @@ const memesController = {
                 message: error.message
             })
         }
+    },
+    searchMemes: async (req, res) => {
+        const { query } = req
+
+        try {
+            const memes = await Meme
+                .find({ $text: { $search: query } })
+                .populate("tags")
+                .populate("owner")
+                .populate("likes")
+                // .populate("comments")
+                .lean()
+                .exec()
+
+            if (!memes) {
+                return res.status(404).send({
+                    status: "false",
+                    message: "Memes not found"
+                })
+            }
+            res.status(200).send({
+                status: "OK",
+                data: memes
+            })
+        } catch (error) {
+            res.status(500).send({
+                status: "false",
+                message: error.message
+            })
+        }
     }
 }
 
@@ -222,5 +277,6 @@ module.exports = {
     getOneMeme: memesController.getOneMeme,
     postMeme: memesController.postMeme,
     patchMeme: memesController.patchMeme,
-    deleteMeme: memesController.deleteMeme
+    deleteMeme: memesController.deleteMeme,
+    searchMemes: memesController.searchMemes
 }

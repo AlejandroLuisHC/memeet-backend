@@ -4,18 +4,20 @@ const {
     getOneMeme,
     postMeme,
     patchMeme,
-    deleteMeme
+    deleteMeme,
+    searchMemes
 } = require("../controllers/memes.controller");
 const { checkJwt } = require("../middlewares/checkJwt.middleware");
 
 const router = express.Router()
 
 router
-    .get("/", getAllMemes)
-    .get("/:id", getOneMeme)
-    .post("/",  postMeme)
-    .patch("/:id", patchMeme)
-    .delete("/:id", deleteMeme)
+    .get("/",                 getAllMemes)
+    .get("/:id",              getOneMeme)
+    .get("/search/:query",    searchMemes)
+    .post("/",      checkJwt, postMeme)
+    .patch("/:id",  checkJwt, patchMeme)
+    .delete("/:id", checkJwt, deleteMeme)
 
 
 module.exports = router;

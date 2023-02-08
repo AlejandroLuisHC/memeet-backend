@@ -12,7 +12,10 @@ const usersController = {
             const users = await User
                 .find({})
                 .sort({ createdAt: -1 })
-                .populate("myMemes")
+                .populate({
+                    path: "myMemes",
+                    populate: "tags",
+                })
                 .populate("likedMemes")
                 .lean()
                 .exec()
@@ -40,7 +43,10 @@ const usersController = {
         try {
             const user = await User
                 .findById(id)
-                .populate("myMemes")
+                .populate({
+                    path: "myMemes",
+                    populate: "tags",
+                })
                 .populate("likedMemes")
                 .lean()
                 .exec()
@@ -124,7 +130,10 @@ const usersController = {
                             url: Location
                         }
                     }, { new: true })
-                        .populate("myMemes")
+                        .populate({
+                            path: "myMemes",
+                            populate: "tags",
+                        })
                         .populate("likedMemes")
                         .lean()
                         .exec()
@@ -146,7 +155,10 @@ const usersController = {
                     const user = await User.findByIdAndUpdate(id, {
                         ...body
                     }, { new: true })
-                        .populate("myMemes")
+                        .populate({
+                            path: "myMemes",
+                            populate: "tags",
+                        })
                         .populate("likedMemes")
                         .lean()
                         .exec()

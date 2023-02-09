@@ -124,8 +124,7 @@ const usersController = {
                         await deleteFile(userExists.image.key)
                     }
                     // Upload new image to S3
-                    const imageName = image.name;
-                    const { Key, Location } = await uploadFile(image.tempFilePath, imageName)
+                    const { Key, Location } = await uploadFile(image.tempFilePath, image.name)
                     await fs.unlink(image.tempFilePath)
 
                     // Update user

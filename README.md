@@ -1,4 +1,5 @@
-
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![CodeFactor](https://www.codefactor.io/repository/github/alejandroluishc/memeet-backend/badge)](https://www.codefactor.io/repository/github/alejandroluishc/memeet-backend)
 # Memeet (Backend API)
 ![This is Memeet](https://gifybucket.s3.eu-west-1.amazonaws.com/memeat+banner.png)
 <br/>
